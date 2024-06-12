@@ -49,19 +49,23 @@ class Rename:
 
     def exe(self):
         try:
-            if not os.path.exists(os.path.join(self.directory, self.old_name)):
-                raise FileNotFoundError
-            elif not os.path.exists(self.directory):
+
+            if not os.path.exists(self.directory):
+                print(1)
                 raise NotADirectoryError
+            elif not os.path.exists(os.path.join(self.directory, self.old_name)):
+                print(2)
+                raise FileNotFoundError
             # Creating old and new path for the file
             old_path = os.path.join(self.directory, self.old_name)
             new_path = os.path.join(self.directory, self.new_name)
             # Checking if the sent item is a file
             if os.path.isfile(old_path):
                 os.rename(old_path, new_path)
-                return 0
-            else:
                 return {"State": 0, "Return": f"File({self.old_name}) was named to ({self.new_name})",
+                        "Command Name": f"{Rename.__name__}"}
+            else:
+                return {"State": -1, "Return": f"({self.old_name}) is not a file",
                         "Command Name": f"{Rename.__name__}"}
         except Exception as e:
             return {"State": -1, "Return": repr(e), "Command Name": f"{Rename.__name__}"}
@@ -78,9 +82,15 @@ class Mv_last:
                 raise NotADirectoryError
             data = SortFiles(self.source_dir, "date", True).exe()
             files = data["Return"]
-            shutil.move(files[0], self.destination_dir)
+            file = None
+            for item in files:
+                if os.path.isfile(item):
+                    file = item
+                    shutil.move(item, self.destination_dir)
+                    break
+
             return {"State": 0,
-                    "Return": f"File {os.path.basename(files[0])} "
+                    "Return": f"File {os.path.basename(file)} "
                               f"was successfully Moved to "f"{os.path.dirname(self.destination_dir)}",
                     "Command Name": f"{Mv_last.__name__}"}
         except Exception as e:

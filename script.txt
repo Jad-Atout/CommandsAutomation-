@@ -2,7 +2,8 @@ Count C:\project_test
 Count C:\project_test
 Count C:\intelFPGA_lite
 Categorize C:\project_test\sub_Dir
+Rename PASSED3.csv PASSED10.csv C:\project_test
+Mv_last C:\project_test C:\project_test2
 ListFiles C:\project_test
 Sort C:\project_test name
-Delete PASSED4.csv C:\project_test
-Rename PASSED3 PASSED10 C:\project_test
+Delete PASSED5.csv C:\project_test
